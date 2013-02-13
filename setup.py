@@ -12,8 +12,8 @@ setup(
         ],
     ext_modules=[
         Extension(
-            "org.wayround.gsasl.gsasl_bin",
-            ["org/wayround/gsasl/gsasl_bin.pyx"],
+            "org.wayround.gsasl.gsasl",
+            ["org/wayround/gsasl/gsasl.pyx"],
             libraries=["gsasl"]
             # TODO: pkg-config
             )

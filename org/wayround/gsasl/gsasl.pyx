@@ -113,6 +113,14 @@ class Gsasl:
     def __init__(self, value):
         self.value = int(value)
 
+class GSASLSessionHook:
+    def __init__(self, value):
+        self.value = int(value)
+
+class GSASLCallbackHook:
+    def __init__(self, value):
+        self.value = int(value)
+
 cdef class GSASLSession:
 
     cdef org.wayround.gsasl.gsasl_h.Gsasl_session * _c_gsasl_session
@@ -385,15 +393,6 @@ cdef class GSASLSession:
                 ),
             'utf-8'
             )
-
-
-class GSASLSessionHook:
-    def __init__(self, value):
-        self.value = int(value)
-
-class GSASLCallbackHook:
-    def __init__(self, value):
-        self.value = int(value)
 
 cdef class GSASL:
 

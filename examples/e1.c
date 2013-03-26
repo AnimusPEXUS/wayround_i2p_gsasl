@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <config.h>
+/*#include <config.h>*/
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,8 +52,9 @@ client_authenticate(Gsasl_session * session)
                 perror("fgets");
                 return;
             }
-            if (buf[strlen(buf) - 1] == ’\n’)
-                buf[strlen(buf) - 1] = ’\0’;
+
+            if (buf[strlen(buf) - 1] == '\n')
+                buf[strlen(buf) - 1] = '\0';
         }
     }
     while (rc == GSASL_NEEDS_MORE);
@@ -65,7 +66,7 @@ client_authenticate(Gsasl_session * session)
     }
     /* The client is done. Here you would typically check if the server
      let the client in. If not, you could try again. */
-    printf("If server accepted us, we’re done.\n");
+    printf("If server accepted us, we're done.\n");
 }
 static void
 client(Gsasl * ctx)
@@ -81,14 +82,10 @@ client(Gsasl * ctx)
     }
     /* Set username and password
      lost when this session is
-     gsasl_property_set (session,
-     gsasl_property_set (session,
      in session handle. This info will be
      deallocated below. */
-    GSASL_AUTHID, "jas"
-    );
-    GSASL_PASSWORD, "secret"
-    );
+    gsasl_property_set(session, GSASL_AUTHID, "jas");
+    gsasl_property_set(session, GSASL_PASSWORD, "secret");
     /* Do it. */
     client_authenticate(session);
     /* Cleanup. */

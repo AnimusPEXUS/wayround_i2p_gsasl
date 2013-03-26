@@ -43,7 +43,7 @@ def client(ctx):
 
             cli = clir[1]
 
-            cli.property_set(org.wayround.gsasl.gsasl.GSASL_AUTHID, b'res')
+            cli.property_set(org.wayround.gsasl.gsasl.GSASL_AUTHID, b'jas')
             cli.property_set(org.wayround.gsasl.gsasl.GSASL_PASSWORD, b'secret')
 
             client_authenticate(cli)

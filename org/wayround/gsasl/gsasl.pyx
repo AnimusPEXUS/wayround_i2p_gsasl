@@ -3,12 +3,14 @@
 Made by wayround.org
 """
 
-import inspect
+import ctypes
 
 cimport org.wayround.gsasl.gsasl_h
 
 from libc.stdio cimport printf
 from libc.stdlib cimport free, malloc
+
+##################### ERRORS
 
 GSASL_OK = org.wayround.gsasl.gsasl_h.GSASL_OK
 GSASL_NEEDS_MORE = org.wayround.gsasl.gsasl_h.GSASL_NEEDS_MORE
@@ -36,7 +38,6 @@ GSASL_NO_CB_TLS_UNIQUE = org.wayround.gsasl.gsasl_h.GSASL_NO_CB_TLS_UNIQUE
 GSASL_NO_SAML20_IDP_IDENTIFIER = org.wayround.gsasl.gsasl_h.GSASL_NO_SAML20_IDP_IDENTIFIER
 GSASL_NO_SAML20_REDIRECT_URL = org.wayround.gsasl.gsasl_h.GSASL_NO_SAML20_REDIRECT_URL
 GSASL_NO_OPENID20_REDIRECT_URL = org.wayround.gsasl.gsasl_h.GSASL_NO_OPENID20_REDIRECT_URL
-
 GSASL_GSSAPI_RELEASE_BUFFER_ERROR = org.wayround.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_BUFFER_ERROR
 GSASL_GSSAPI_IMPORT_NAME_ERROR = org.wayround.gsasl.gsasl_h.GSASL_GSSAPI_IMPORT_NAME_ERROR
 GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR = org.wayround.gsasl.gsasl_h.GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR
@@ -57,12 +58,114 @@ GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR = org.wayround.gsasl.gsasl_h.GSASL_
 GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR = org.wayround.gsasl.gsasl_h.GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR
 GSASL_GSSAPI_RELEASE_OID_SET_ERROR = org.wayround.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_OID_SET_ERROR
 
+ERRORS_LIST = {
+    'GSASL_OK': GSASL_OK,
+    'GSASL_NEEDS_MORE': GSASL_NEEDS_MORE,
+    'GSASL_UNKNOWN_MECHANISM': GSASL_UNKNOWN_MECHANISM,
+    'GSASL_MECHANISM_CALLED_TOO_MANY_TIMES': GSASL_MECHANISM_CALLED_TOO_MANY_TIMES,
+    'GSASL_MALLOC_ERROR': GSASL_MALLOC_ERROR,
+    'GSASL_BASE64_ERROR': GSASL_BASE64_ERROR,
+    'GSASL_CRYPTO_ERROR': GSASL_CRYPTO_ERROR,
+    'GSASL_SASLPREP_ERROR': GSASL_SASLPREP_ERROR,
+    'GSASL_MECHANISM_PARSE_ERROR': GSASL_MECHANISM_PARSE_ERROR,
+    'GSASL_AUTHENTICATION_ERROR': GSASL_AUTHENTICATION_ERROR,
+    'GSASL_INTEGRITY_ERROR': GSASL_INTEGRITY_ERROR,
+    'GSASL_NO_CLIENT_CODE': GSASL_NO_CLIENT_CODE,
+    'GSASL_NO_SERVER_CODE': GSASL_NO_SERVER_CODE,
+    'GSASL_NO_CALLBACK': GSASL_NO_CALLBACK,
+    'GSASL_NO_ANONYMOUS_TOKEN': GSASL_NO_ANONYMOUS_TOKEN,
+    'GSASL_NO_AUTHID': GSASL_NO_AUTHID,
+    'GSASL_NO_AUTHZID': GSASL_NO_AUTHZID,
+    'GSASL_NO_PASSWORD': GSASL_NO_PASSWORD,
+    'GSASL_NO_PASSCODE': GSASL_NO_PASSCODE,
+    'GSASL_NO_PIN': GSASL_NO_PIN,
+    'GSASL_NO_SERVICE': GSASL_NO_SERVICE,
+    'GSASL_NO_HOSTNAME': GSASL_NO_HOSTNAME,
+    'GSASL_NO_CB_TLS_UNIQUE': GSASL_NO_CB_TLS_UNIQUE,
+    'GSASL_NO_SAML20_IDP_IDENTIFIER': GSASL_NO_SAML20_IDP_IDENTIFIER,
+    'GSASL_NO_SAML20_REDIRECT_URL': GSASL_NO_SAML20_REDIRECT_URL,
+    'GSASL_NO_OPENID20_REDIRECT_URL': GSASL_NO_OPENID20_REDIRECT_URL,
+    'GSASL_GSSAPI_RELEASE_BUFFER_ERROR': GSASL_GSSAPI_RELEASE_BUFFER_ERROR,
+    'GSASL_GSSAPI_IMPORT_NAME_ERROR': GSASL_GSSAPI_IMPORT_NAME_ERROR,
+    'GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR': GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR,
+    'GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR': GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR,
+    'GSASL_GSSAPI_UNWRAP_ERROR': GSASL_GSSAPI_UNWRAP_ERROR,
+    'GSASL_GSSAPI_WRAP_ERROR': GSASL_GSSAPI_WRAP_ERROR,
+    'GSASL_GSSAPI_ACQUIRE_CRED_ERROR': GSASL_GSSAPI_ACQUIRE_CRED_ERROR,
+    'GSASL_GSSAPI_DISPLAY_NAME_ERROR': GSASL_GSSAPI_DISPLAY_NAME_ERROR,
+    'GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR': GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR,
+    'GSASL_KERBEROS_V5_INIT_ERROR': GSASL_KERBEROS_V5_INIT_ERROR,
+    'GSASL_KERBEROS_V5_INTERNAL_ERROR': GSASL_KERBEROS_V5_INTERNAL_ERROR,
+    'GSASL_SHISHI_ERROR': GSASL_SHISHI_ERROR,
+    'GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE': GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE,
+    'GSASL_SECURID_SERVER_NEED_NEW_PIN': GSASL_SECURID_SERVER_NEED_NEW_PIN,
+    'GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR': GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR,
+    'GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR': GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR,
+    'GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR': GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR,
+    'GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR': GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR,
+    'GSASL_GSSAPI_RELEASE_OID_SET_ERROR': GSASL_GSSAPI_RELEASE_OID_SET_ERROR
+    }
+
+ERRORS = {
+    'GSASL_OK': "Successful return code, guaranteed to be always 0",
+    'GSASL_NEEDS_MORE': "Mechanism expects another round-trip",
+    'GSASL_UNKNOWN_MECHANISM': "Application requested an unknown mechanism",
+    'GSASL_MECHANISM_CALLED_TOO_MANY_TIMES': "Application requested too many round trips from mechanism",
+    'GSASL_MALLOC_ERROR': "Memory allocation failed",
+    'GSASL_BASE64_ERROR': "Base64 encoding/decoding failed",
+    'GSASL_CRYPTO_ERROR': "Cryptographic error",
+    'GSASL_SASLPREP_ERROR': "Failed to prepare internationalized string",
+    'GSASL_MECHANISM_PARSE_ERROR': "Mechanism could not parse input",
+    'GSASL_AUTHENTICATION_ERROR': "Authentication has failed",
+    'GSASL_INTEGRITY_ERROR': "Application data integrity check failed",
+    'GSASL_NO_CLIENT_CODE': "Library was built without client functionality",
+    'GSASL_NO_SERVER_CODE': "Library was built without server functionality",
+    'GSASL_NO_CALLBACK': "Application did not provide a callback",
+    'GSASL_NO_ANONYMOUS_TOKEN': "Could not get required anonymous token",
+    'GSASL_NO_AUTHID': "Could not get required authentication identity (username)",
+    'GSASL_NO_AUTHZID': "Could not get required authorization identity",
+    'GSASL_NO_PASSWORD': "Could not get required password",
+    'GSASL_NO_PASSCODE': "Could not get required SecurID PIN",
+    'GSASL_NO_PIN': "Could not get required SecurID PIN",
+    'GSASL_NO_SERVICE': "Could not get required service name",
+    'GSASL_NO_HOSTNAME': "Could not get required hostname",
+    'GSASL_NO_CB_TLS_UNIQUE': "Could not get required tls-unique CB",
+    'GSASL_NO_SAML20_IDP_IDENTIFIER': "Could not get required SAML IdP",
+    'GSASL_NO_SAML20_REDIRECT_URL': "Could not get required SAML redirect URL",
+    'GSASL_NO_OPENID20_REDIRECT_URL': "Could not get required OpenID redirect URL",
+    'GSASL_GSSAPI_RELEASE_BUFFER_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_IMPORT_NAME_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_UNWRAP_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_WRAP_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_ACQUIRE_CRED_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_DISPLAY_NAME_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR': "",
+    'GSASL_KERBEROS_V5_INIT_ERROR': "Init error in KERBEROS_V5",
+    'GSASL_KERBEROS_V5_INTERNAL_ERROR': "General error in KERBEROS_V5",
+    'GSASL_SHISHI_ERROR': "General error in KERBEROS_V5",
+    'GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE': "SecurID mechanism needs an additional passcode",
+    'GSASL_SECURID_SERVER_NEED_NEW_PIN': "SecurID mechanism needs an new PIN",
+    'GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR': "GSS-API library call error",
+    'GSASL_GSSAPI_RELEASE_OID_SET_ERROR': "GSS-API library call error",
+    }
+
+##################### RFC 2222 (MECHANISM NAME LENGTH)
+
 GSASL_MIN_MECHANISM_SIZE = org.wayround.gsasl.gsasl_h.GSASL_MIN_MECHANISM_SIZE
 GSASL_MAX_MECHANISM_SIZE = org.wayround.gsasl.gsasl_h.GSASL_MAX_MECHANISM_SIZE
+
+##################### QUALITY OF PROTECTION TYPES
 
 GSASL_QOP_AUTH = org.wayround.gsasl.gsasl_h.GSASL_QOP_AUTH
 GSASL_QOP_AUTH_INT = org.wayround.gsasl.gsasl_h.GSASL_QOP_AUTH_INT
 GSASL_QOP_AUTH_CONF = org.wayround.gsasl.gsasl_h.GSASL_QOP_AUTH_CONF
+
+##################### ENCRYPTION TYPES
 
 GSASL_CIPHER_DES = org.wayround.gsasl.gsasl_h.GSASL_CIPHER_DES
 GSASL_CIPHER_3DES = org.wayround.gsasl.gsasl_h.GSASL_CIPHER_3DES
@@ -71,7 +174,11 @@ GSASL_CIPHER_RC4_40 = org.wayround.gsasl.gsasl_h.GSASL_CIPHER_RC4_40
 GSASL_CIPHER_RC4_56 = org.wayround.gsasl.gsasl_h.GSASL_CIPHER_RC4_56
 GSASL_CIPHER_AES = org.wayround.gsasl.gsasl_h.GSASL_CIPHER_AES
 
+##################### FLAGS FOR THE SASLPREP FUNCTION
+
 GSASL_ALLOW_UNASSIGNED = org.wayround.gsasl.gsasl_h.GSASL_ALLOW_UNASSIGNED
+
+##################### CALLBACK/PROPERTY TYPES
 
 GSASL_AUTHID = org.wayround.gsasl.gsasl_h.GSASL_AUTHID
 GSASL_AUTHZID = org.wayround.gsasl.gsasl_h.GSASL_AUTHZID
@@ -95,10 +202,8 @@ GSASL_SAML20_IDP_IDENTIFIER = org.wayround.gsasl.gsasl_h.GSASL_SAML20_IDP_IDENTI
 GSASL_SAML20_REDIRECT_URL = org.wayround.gsasl.gsasl_h.GSASL_SAML20_REDIRECT_URL
 GSASL_OPENID20_REDIRECT_URL = org.wayround.gsasl.gsasl_h.GSASL_OPENID20_REDIRECT_URL
 GSASL_OPENID20_OUTCOME_DATA = org.wayround.gsasl.gsasl_h.GSASL_OPENID20_OUTCOME_DATA
-
 GSASL_SAML20_AUTHENTICATE_IN_BROWSER = org.wayround.gsasl.gsasl_h.GSASL_SAML20_AUTHENTICATE_IN_BROWSER
 GSASL_OPENID20_AUTHENTICATE_IN_BROWSER = org.wayround.gsasl.gsasl_h.GSASL_OPENID20_AUTHENTICATE_IN_BROWSER
-
 GSASL_VALIDATE_SIMPLE = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_SIMPLE
 GSASL_VALIDATE_EXTERNAL = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_EXTERNAL
 GSASL_VALIDATE_ANONYMOUS = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_ANONYMOUS
@@ -106,6 +211,76 @@ GSASL_VALIDATE_GSSAPI = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_GSSAPI
 GSASL_VALIDATE_SECURID = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_SECURID
 GSASL_VALIDATE_SAML20 = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_SAML20
 GSASL_VALIDATE_OPENID20 = org.wayround.gsasl.gsasl_h.GSASL_VALIDATE_OPENID20
+
+# PROPERTIES DICT
+
+PROPERTIES_LIST = {
+    'GSASL_AUTHID': GSASL_AUTHID,
+    'GSASL_AUTHZID': GSASL_AUTHZID,
+    'GSASL_PASSWORD': GSASL_PASSWORD,
+    'GSASL_ANONYMOUS_TOKEN': GSASL_ANONYMOUS_TOKEN,
+    'GSASL_SERVICE': GSASL_SERVICE,
+    'GSASL_HOSTNAME': GSASL_HOSTNAME,
+    'GSASL_GSSAPI_DISPLAY_NAME': GSASL_GSSAPI_DISPLAY_NAME,
+    'GSASL_PASSCODE': GSASL_PASSCODE,
+    'GSASL_SUGGESTED_PIN': GSASL_SUGGESTED_PIN,
+    'GSASL_PIN': GSASL_PIN,
+    'GSASL_REALM': GSASL_REALM,
+    'GSASL_DIGEST_MD5_HASHED_PASSWORD': GSASL_DIGEST_MD5_HASHED_PASSWORD,
+    'GSASL_QOPS': GSASL_QOPS,
+    'GSASL_QOP': GSASL_QOP,
+    'GSASL_SCRAM_ITER': GSASL_SCRAM_ITER,
+    'GSASL_SCRAM_SALT': GSASL_SCRAM_SALT,
+    'GSASL_SCRAM_SALTED_PASSWORD': GSASL_SCRAM_SALTED_PASSWORD,
+    'GSASL_CB_TLS_UNIQUE': GSASL_CB_TLS_UNIQUE,
+    'GSASL_SAML20_IDP_IDENTIFIER': GSASL_SAML20_IDP_IDENTIFIER,
+    'GSASL_SAML20_REDIRECT_URL': GSASL_SAML20_REDIRECT_URL,
+    'GSASL_OPENID20_REDIRECT_URL': GSASL_OPENID20_REDIRECT_URL,
+    'GSASL_OPENID20_OUTCOME_DATA': GSASL_OPENID20_OUTCOME_DATA,
+    'GSASL_SAML20_AUTHENTICATE_IN_BROWSER': GSASL_SAML20_AUTHENTICATE_IN_BROWSER,
+    'GSASL_OPENID20_AUTHENTICATE_IN_BROWSER': GSASL_OPENID20_AUTHENTICATE_IN_BROWSER,
+    'GSASL_VALIDATE_SIMPLE': GSASL_VALIDATE_SIMPLE,
+    'GSASL_VALIDATE_EXTERNAL': GSASL_VALIDATE_EXTERNAL,
+    'GSASL_VALIDATE_ANONYMOUS': GSASL_VALIDATE_ANONYMOUS,
+    'GSASL_VALIDATE_GSSAPI': GSASL_VALIDATE_GSSAPI,
+    'GSASL_VALIDATE_SECURID': GSASL_VALIDATE_SECURID,
+    'GSASL_VALIDATE_SAML20': GSASL_VALIDATE_SAML20,
+    'GSASL_VALIDATE_OPENID20': GSASL_VALIDATE_OPENID20
+    }
+
+PROPERTIES = {
+    'GSASL_AUTHID': "Authentication identity (username)",
+    'GSASL_AUTHZID': "Authorization identity",
+    'GSASL_PASSWORD': "Password",
+    'GSASL_ANONYMOUS_TOKEN': "Anonymous identifier",
+    'GSASL_SERVICE': "Service name",
+    'GSASL_HOSTNAME': "Host name",
+    'GSASL_GSSAPI_DISPLAY_NAME': "GSS-API credential principal name",
+    'GSASL_PASSCODE': "SecurID passcode",
+    'GSASL_SUGGESTED_PIN': "SecurID suggested PIN",
+    'GSASL_PIN': "SecurID PIN",
+    'GSASL_REALM': "User realm",
+    'GSASL_DIGEST_MD5_HASHED_PASSWORD': "Pre-computed hashed DIGEST-MD5 password, to avoid storing passwords in the clear",
+    'GSASL_QOPS': "Set of quality-of-protection values",
+    'GSASL_QOP': "Quality-of-protection value",
+    'GSASL_SCRAM_ITER': "Number of iterations in password-to-key hashing",
+    'GSASL_SCRAM_SALT': "Salt for password-to-key hashing",
+    'GSASL_SCRAM_SALTED_PASSWORD': "Pre-computed salted SCRAM key, to avoid re-computation and storing passwords in the clear",
+    'GSASL_CB_TLS_UNIQUE': "Base64 encoded tls-unique channel binding",
+    'GSASL_SAML20_IDP_IDENTIFIER': "SAML20 user IdP URL",
+    'GSASL_SAML20_REDIRECT_URL': "SAML 2.0 URL to access in browser",
+    'GSASL_OPENID20_REDIRECT_URL': "OpenID 2.0 URL to access in browser",
+    'GSASL_OPENID20_OUTCOME_DATA': "OpenID 2.0 authentication outcome data",
+    'GSASL_SAML20_AUTHENTICATE_IN_BROWSER': "Request to perform SAML 2.0 authentication in browser",
+    'GSASL_OPENID20_AUTHENTICATE_IN_BROWSER': "Request to perform OpenID 2.0 authentication in browser",
+    'GSASL_VALIDATE_SIMPLE': "Request for simple validation",
+    'GSASL_VALIDATE_EXTERNAL': "Request for validation of EXTERNAL",
+    'GSASL_VALIDATE_ANONYMOUS': "Request for validation of ANONYMOUS",
+    'GSASL_VALIDATE_GSSAPI': "Request for validation of GSSAPI/GS2",
+    'GSASL_VALIDATE_SECURID': "Reqest for validation of SecurID",
+    'GSASL_VALIDATE_SAML20': "Reqest for validation of SAML20",
+    'GSASL_VALIDATE_OPENID20': "Reqest for validation of OpenID 2.0 login",
+    }
 
 class GSASInitException(Exception): pass
 
@@ -121,6 +296,8 @@ class GSASLCallbackHook:
     def __init__(self, value):
         self.value = int(value)
 
+gsasl_session_registry = {}
+
 cdef class GSASLSession:
 
     cdef org.wayround.gsasl.gsasl_h.Gsasl_session * _c_gsasl_session
@@ -134,11 +311,28 @@ cdef class GSASLSession:
             < org.wayround.gsasl.gsasl_h.Gsasl_session *> < int > int(value)
             )
 
+        if not < int > self._c_gsasl_session in gsasl_session_registry:
+            print("adding {} to gsasl_session_registry".format(< int > self._c_gsasl_session))
+            gsasl_session_registry[ < int > self._c_gsasl_session] = self
+
     def __dealloc__(self):
+        print("object {} dealloc called".format(self))
         if self._c_gsasl_session != NULL:
             org.wayround.gsasl.gsasl_h.gsasl_finish(
                 self._c_gsasl_session
                 )
+
+            if < int > self._c_gsasl_session in gsasl_session_registry:
+                print("removing {} from gsasl_session_registry".format(< int > self._c_gsasl_session))
+                del gsasl_session_registry[ < int > self._c_gsasl_session]
+
+
+    def close(self):
+        if self._c_gsasl_session != NULL:
+            if < int > self._c_gsasl_session in gsasl_session_registry:
+                print("removing {} from gsasl_session_registry".format(< int > self._c_gsasl_session))
+                del gsasl_session_registry[ < int > self._c_gsasl_session]
+
 
     def hook_set(self, hook):
 
@@ -394,11 +588,14 @@ cdef class GSASLSession:
             'utf-8'
             )
 
+gsasl_registry = {}
+
 cdef class GSASL:
 
     cdef org.wayround.gsasl.gsasl_h.Gsasl * _c_gsasl
     cdef _existed
     cdef _py_callback
+
 
     def __cinit__(self):
         self._c_gsasl = NULL
@@ -428,9 +625,14 @@ cdef class GSASL:
             if res != GSASL_OK:
                 raise GSASInitException("Exception {} while init".format(res))
 
+            if not < int > self._c_gsasl in gsasl_registry.keys():
+                print("adding {} to gsasl_registry".format(< int > self._c_gsasl))
+                gsasl_registry[ < int > self._c_gsasl] = self
+
         return
 
     def __dealloc__(self):
+        print("object {} dealloc called".format(self))
         if not self._existed:
             if self._c_gsasl != NULL:
                 org.wayround.gsasl.gsasl_h.gsasl_done(
@@ -439,8 +641,22 @@ cdef class GSASL:
 
         return
 
+
+    def close(self):
+
+        if not self._existed:
+            if < int > self._c_gsasl in gsasl_registry.keys():
+                print("removing {} from gsasl_registry".format(< int > self._c_gsasl))
+                del gsasl_registry[ < int > self._c_gsasl]
+        return
+
+
     def get_c_gsasl(self):
         return < int > self._c_gsasl
+
+    @property
+    def py_callback(self):
+        return self._py_callback
 
     def set_c_gsasl(self, py_gsasl):
         self._c_gsasl = < org.wayround.gsasl.gsasl_h.Gsasl *> < int > py_gsasl
@@ -451,7 +667,7 @@ cdef class GSASL:
 
         org.wayround.gsasl.gsasl_h.gsasl_callback_set(
             self._c_gsasl,
-            < org.wayround.gsasl.gsasl_h.Gsasl_callback_function > self._callback
+            < org.wayround.gsasl.gsasl_h.Gsasl_callback_function > callback
             )
         return
 
@@ -469,27 +685,7 @@ cdef class GSASL:
             < org.wayround.gsasl.gsasl_h.Gsasl_property >< int > prop
             )
 
-    cdef _callback(
-        self,
-        org.wayround.gsasl.gsasl_h.Gsasl * ctx,
-        org.wayround.gsasl.gsasl_h.Gsasl_session * sctx,
-        org.wayround.gsasl.gsasl_h.Gsasl_property prop
-        ):
-
-        cdef int ret = GSASL_OK
-
-        print("test callback message: prop == {}".format(< int > prop))
-
-        if self._py_callback and inspect.iscallable(self._py_callback):
-
-            ret = self._py_callback(
-                GSASLSession(< int > sctx),
-                < int > prop
-                )
-
-        print("after test callback message: result == {}".format(< int > ret))
-
-        return ret
+        return
 
     def callback_hook_set(self, hook):
 
@@ -633,6 +829,39 @@ cdef class GSASL:
 
         return ret
 
+cdef int callback(
+    org.wayround.gsasl.gsasl_h.Gsasl * ctx,
+    org.wayround.gsasl.gsasl_h.Gsasl_session * sctx,
+    org.wayround.gsasl.gsasl_h.Gsasl_property prop
+    ):
+
+    if not < int > ctx in gsasl_registry:
+        raise KeyError("{} not registered in gsasl_registry".format(< int > ctx))
+
+    if not < int > sctx in gsasl_session_registry:
+        raise KeyError("{} not registered in gsasl_session_registry".format(< int > sctx))
+
+    context = gsasl_registry[ < int > ctx]
+    session = gsasl_session_registry[ < int > sctx]
+
+    if not hasattr(context, 'py_callback'):
+        raise KeyError("py_callback is absent in context of {}".format(context))
+
+    cdef int ret = GSASL_OK
+
+    t1 = context.py_callback != None
+
+    t2 = callable(context.py_callback)
+
+    if t1 and t2:
+
+        ret = context.py_callback(
+            context,
+            session,
+            < int > prop
+            )
+
+    return ret
 
 # TODO: char *gsasl_client_suggest_mechanism (Gsasl * ctx,
 #                                      char
@@ -681,6 +910,29 @@ def strerror_name(err):
         < str > org.wayround.gsasl.gsasl_h.gsasl_strerror_name(int(err)),
         'utf-8'
         )
+
+def strproperty(prop):
+
+    ret = '<Unknown property>'
+
+    for i in list(PROPERTIES_LIST.keys()):
+        if PROPERTIES_LIST[i] == prop:
+            ret = PROPERTIES[i]
+            break
+
+    return ret
+
+def strproperty_name(prop):
+
+    ret = '<Unknown property>'
+
+    for i in list(PROPERTIES_LIST.keys()):
+        if PROPERTIES_LIST[i] == prop:
+            ret = i
+            break
+
+    return ret
+
 
 def saslprep(inv, flags):
 

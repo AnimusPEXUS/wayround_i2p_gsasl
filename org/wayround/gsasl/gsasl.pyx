@@ -3,11 +3,8 @@
 Made by wayround.org
 """
 
-import ctypes
-
 cimport org.wayround.gsasl.gsasl_h
 
-from libc.stdio cimport printf
 from libc.stdlib cimport free, malloc
 
 ##################### ERRORS
@@ -296,6 +293,7 @@ class GSASLCallbackHook:
     def __init__(self, value):
         self.value = int(value)
 
+gsasl_registry = {}
 gsasl_session_registry = {}
 
 cdef class GSASLSession:
@@ -312,25 +310,18 @@ cdef class GSASLSession:
             )
 
         if not < int > self._c_gsasl_session in gsasl_session_registry:
-            print("adding {} to gsasl_session_registry".format(< int > self._c_gsasl_session))
             gsasl_session_registry[ < int > self._c_gsasl_session] = self
 
     def __dealloc__(self):
-        print("object {} dealloc called".format(self))
         if self._c_gsasl_session != NULL:
             org.wayround.gsasl.gsasl_h.gsasl_finish(
                 self._c_gsasl_session
                 )
 
-            if < int > self._c_gsasl_session in gsasl_session_registry:
-                print("removing {} from gsasl_session_registry".format(< int > self._c_gsasl_session))
-                del gsasl_session_registry[ < int > self._c_gsasl_session]
-
 
     def close(self):
         if self._c_gsasl_session != NULL:
             if < int > self._c_gsasl_session in gsasl_session_registry:
-                print("removing {} from gsasl_session_registry".format(< int > self._c_gsasl_session))
                 del gsasl_session_registry[ < int > self._c_gsasl_session]
 
 
@@ -368,14 +359,22 @@ cdef class GSASLSession:
         if not isinstance(prop, int):
             raise TypeError("prop must be int")
 
-        if not isinstance(data, bytes):
-            raise TypeError("data must be bytes")
+        if data != None and not isinstance(data, bytes):
+            raise TypeError("data must be bytes or None")
 
-        org.wayround.gsasl.gsasl_h.gsasl_property_set(
-            self._c_gsasl_session,
-            < org.wayround.gsasl.gsasl_h.Gsasl_property >< int > prop,
-            < bytes > data
-            )
+        if data != None:
+            org.wayround.gsasl.gsasl_h.gsasl_property_set(
+                self._c_gsasl_session,
+                < org.wayround.gsasl.gsasl_h.Gsasl_property >< int > prop,
+                < bytes > data
+                )
+
+        else:
+            org.wayround.gsasl.gsasl_h.gsasl_property_set(
+                self._c_gsasl_session,
+                < org.wayround.gsasl.gsasl_h.Gsasl_property >< int > prop,
+                NULL
+                )
 
         return
 
@@ -588,7 +587,6 @@ cdef class GSASLSession:
             'utf-8'
             )
 
-gsasl_registry = {}
 
 cdef class GSASL:
 
@@ -626,13 +624,11 @@ cdef class GSASL:
                 raise GSASInitException("Exception {} while init".format(res))
 
             if not < int > self._c_gsasl in gsasl_registry.keys():
-                print("adding {} to gsasl_registry".format(< int > self._c_gsasl))
                 gsasl_registry[ < int > self._c_gsasl] = self
 
         return
 
     def __dealloc__(self):
-        print("object {} dealloc called".format(self))
         if not self._existed:
             if self._c_gsasl != NULL:
                 org.wayround.gsasl.gsasl_h.gsasl_done(
@@ -646,7 +642,6 @@ cdef class GSASL:
 
         if not self._existed:
             if < int > self._c_gsasl in gsasl_registry.keys():
-                print("removing {} from gsasl_registry".format(< int > self._c_gsasl))
                 del gsasl_registry[ < int > self._c_gsasl]
         return
 
@@ -1250,3 +1245,82 @@ def hmac_sha1(key, inv):
         ret = (< int > cret, None)
 
     return ret
+
+class GSASLSimple:
+
+    """
+    Simple GSASL class
+    """
+
+    def __init__(self, mechanism='PLAIN', mode='client', callback=None):
+
+        self.mechanism = mechanism
+        self.mode = mode
+
+        self.gsasl_instance = None
+        self.gsasl_session_instance = None
+
+        self.started = False
+
+        self.callback = callback
+
+        if not callable(callback):
+            raise ValueError("callback must be callable")
+
+        if not mode in ['client', 'server']:
+            raise ValueError("`mode' must be in ['client', 'server'] set")
+
+        return
+
+    def __del__(self):
+        self.close()
+        return
+
+    def start(self):
+
+        self.gsasl_instance = GSASL()
+        self.gsasl_instance.set_callback(self.callback)
+
+        res = None
+
+        if self.mode == 'client':
+            res = self.gsasl_instance.client_start(self.mechanism)
+
+        elif self.mode == 'server':
+            res = self.gsasl_instance.server_start(self.mechanism)
+
+        if res[0] == GSASL_OK:
+            self.gsasl_session_instance = res[1]
+        else:
+            raise Exception("Could not start {} GSASL session".format(self.mode))
+
+        self.started = True
+
+        return
+
+    def close(self):
+
+        if self.gsasl_session_instance:
+            self.gsasl_session_instance.close()
+
+        if self.gsasl_instance:
+            self.gsasl_instance.close()
+
+        return
+
+    def step(self, bytes_buff):
+
+        if not self.started:
+            self.start()
+#            raise Exception("Not started")
+
+        return self.gsasl_session_instance.step(bytes_buff)
+
+    def step64(self, base64_str):
+
+        if not self.started:
+            self.start()
+#            raise Exception("Not started")
+
+        return self.gsasl_session_instance.step64(base64_str)
+

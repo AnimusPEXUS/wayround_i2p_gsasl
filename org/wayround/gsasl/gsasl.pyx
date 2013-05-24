@@ -1,4 +1,6 @@
 
+# cython: c_string_type=unicode, c_string_encoding=utf-8
+
 """
 Made by wayround.org
 """

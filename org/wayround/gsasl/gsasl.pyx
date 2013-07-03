@@ -897,16 +897,36 @@ def check_version(req_version=None):
     return ret
 
 def strerror(err):
-    return str(
-        < str > org.wayround.gsasl.gsasl_h.gsasl_strerror(int(err)),
-        'utf-8'
-        )
+
+    if not isinstance(err, int):
+        raise TypeError(
+            "`err' value must be int, but it is {}".format(type(err))
+            )
+
+    ret = 0
+
+    ret = < bytes > org.wayround.gsasl.gsasl_h.gsasl_strerror(int(err))
+
+    if isinstance(ret, bytes):
+        ret = str(ret, 'utf-8')
+
+    return ret
 
 def strerror_name(err):
-    return str(
-        < str > org.wayround.gsasl.gsasl_h.gsasl_strerror_name(int(err)),
-        'utf-8'
-        )
+
+    if not isinstance(err, int):
+        raise TypeError(
+            "`err' value must be int, but it is {}".format(type(err))
+            )
+
+    ret = 0
+
+    ret = < bytes > org.wayround.gsasl.gsasl_h.gsasl_strerror_name(int(err))
+
+    if isinstance(ret, bytes):
+        ret = str(ret, 'utf-8')
+
+    return ret
 
 def strproperty(prop):
 

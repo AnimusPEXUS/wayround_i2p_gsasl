@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup, Extension
 from Cython.Distutils import build_ext
 
 setup(
     name='org_wayround_gsasl',
+    version='0.1',
     description='Python gsasl binding',
     packages=[
         'org.wayround.gsasl'

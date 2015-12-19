@@ -1,7 +1,7 @@
 
 import logging
 
-import org.wayround.gsasl.gsasl
+import wayround_org.gsasl.gsasl
 
 def client_authenticate(cli):
 
@@ -12,41 +12,41 @@ def client_authenticate(cli):
     while True:
         print("step {}".format(step))
         rcr = cli.step64(buf)
-        if (rcr[0] == org.wayround.gsasl.gsasl.GSASL_NEEDS_MORE
-            or rcr[0] == org.wayround.gsasl.gsasl.GSASL_OK):
+        if (rcr[0] == wayround_org.gsasl.gsasl.GSASL_NEEDS_MORE
+            or rcr[0] == wayround_org.gsasl.gsasl.GSASL_OK):
 
             print("Output:\n{}".format(rcr[1]))
 
-        if rcr[0] == org.wayround.gsasl.gsasl.GSASL_NEEDS_MORE:
+        if rcr[0] == wayround_org.gsasl.gsasl.GSASL_NEEDS_MORE:
             print("Input base64 encoded data from server:")
             p = input()
 
             p.strip()
 
-        if rcr[0] != org.wayround.gsasl.gsasl.GSASL_NEEDS_MORE:
+        if rcr[0] != wayround_org.gsasl.gsasl.GSASL_NEEDS_MORE:
             break
 
         step += 1
 
 def cb(context, session, prop):
 
-    ret = org.wayround.gsasl.gsasl.GSASL_OK
+    ret = wayround_org.gsasl.gsasl.GSASL_OK
 
     print(
         "{}: ({}) {} requested".format(
-            org.wayround.gsasl.gsasl.strproperty_name(prop),
+            wayround_org.gsasl.gsasl.strproperty_name(prop),
             prop,
-            org.wayround.gsasl.gsasl.strproperty(prop)
+            wayround_org.gsasl.gsasl.strproperty(prop)
             )
         )
 
-    if prop == org.wayround.gsasl.gsasl.GSASL_AUTHID:
+    if prop == wayround_org.gsasl.gsasl.GSASL_AUTHID:
         print("Setting GSASL_AUTHID")
-        session.property_set(org.wayround.gsasl.gsasl.GSASL_AUTHID, b'jas')
+        session.property_set(wayround_org.gsasl.gsasl.GSASL_AUTHID, b'jas')
 
-    if prop == org.wayround.gsasl.gsasl.GSASL_PASSWORD:
+    if prop == wayround_org.gsasl.gsasl.GSASL_PASSWORD:
         print("Setting GSASL_PASSWORD")
-        session.property_set(org.wayround.gsasl.gsasl.GSASL_PASSWORD, b'secret')
+        session.property_set(wayround_org.gsasl.gsasl.GSASL_PASSWORD, b'secret')
 
     return ret
 
@@ -60,7 +60,7 @@ def client(ctx):
     except:
         logging.exception("Error while starting client")
     else:
-        if clir[0] != org.wayround.gsasl.gsasl.GSASL_OK:
+        if clir[0] != wayround_org.gsasl.gsasl.GSASL_OK:
             print("Can't start client session")
         else:
 
@@ -75,7 +75,7 @@ def main():
 
     ctx = None
     try:
-        ctx = org.wayround.gsasl.gsasl.GSASL()
+        ctx = wayround_org.gsasl.gsasl.GSASL()
     except:
         logging.exception("Error while initiating")
     else:

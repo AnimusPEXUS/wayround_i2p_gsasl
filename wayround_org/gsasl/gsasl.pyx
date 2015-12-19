@@ -9,7 +9,7 @@ cimport wayround_org.gsasl.gsasl_h
 
 from libc.stdlib cimport free, malloc
 
-##################### ERRORS
+# ERRORS
 
 GSASL_OK = wayround_org.gsasl.gsasl_h.GSASL_OK
 GSASL_NEEDS_MORE = wayround_org.gsasl.gsasl_h.GSASL_NEEDS_MORE
@@ -153,18 +153,18 @@ ERRORS = {
     'GSASL_GSSAPI_RELEASE_OID_SET_ERROR': "GSS-API library call error",
     }
 
-##################### RFC 2222 (MECHANISM NAME LENGTH)
+# RFC 2222 (MECHANISM NAME LENGTH)
 
 GSASL_MIN_MECHANISM_SIZE = wayround_org.gsasl.gsasl_h.GSASL_MIN_MECHANISM_SIZE
 GSASL_MAX_MECHANISM_SIZE = wayround_org.gsasl.gsasl_h.GSASL_MAX_MECHANISM_SIZE
 
-##################### QUALITY OF PROTECTION TYPES
+# QUALITY OF PROTECTION TYPES
 
 GSASL_QOP_AUTH = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH
 GSASL_QOP_AUTH_INT = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH_INT
 GSASL_QOP_AUTH_CONF = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH_CONF
 
-##################### ENCRYPTION TYPES
+# ENCRYPTION TYPES
 
 GSASL_CIPHER_DES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_DES
 GSASL_CIPHER_3DES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_3DES
@@ -173,11 +173,11 @@ GSASL_CIPHER_RC4_40 = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_RC4_40
 GSASL_CIPHER_RC4_56 = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_RC4_56
 GSASL_CIPHER_AES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_AES
 
-##################### FLAGS FOR THE SASLPREP FUNCTION
+# FLAGS FOR THE SASLPREP FUNCTION
 
 GSASL_ALLOW_UNASSIGNED = wayround_org.gsasl.gsasl_h.GSASL_ALLOW_UNASSIGNED
 
-##################### CALLBACK/PROPERTY TYPES
+# CALLBACK/PROPERTY TYPES
 
 GSASL_AUTHID = wayround_org.gsasl.gsasl_h.GSASL_AUTHID
 GSASL_AUTHZID = wayround_org.gsasl.gsasl_h.GSASL_AUTHZID
@@ -281,17 +281,25 @@ PROPERTIES = {
     'GSASL_VALIDATE_OPENID20': "Reqest for validation of OpenID 2.0 login",
     }
 
-class GSASInitException(Exception): pass
+
+class GSASInitException(Exception):
+    pass
+
 
 class Gsasl:
+
     def __init__(self, value):
         self.value = int(value)
+
 
 class GSASLSessionHook:
+
     def __init__(self, value):
         self.value = int(value)
 
+
 class GSASLCallbackHook:
+
     def __init__(self, value):
         self.value = int(value)
 
@@ -308,7 +316,7 @@ cdef class GSASLSession:
     def __init__(self, value):
 
         self._c_gsasl_session = (
-            < wayround_org.gsasl.gsasl_h.Gsasl_session *> < int > int(value)
+            < wayround_org.gsasl.gsasl_h.Gsasl_session * > < int > int(value)
             )
 
         if not < int > self._c_gsasl_session in gsasl_session_registry:
@@ -320,12 +328,10 @@ cdef class GSASLSession:
                 self._c_gsasl_session
                 )
 
-
     def close(self):
         if self._c_gsasl_session != NULL:
             if < int > self._c_gsasl_session in gsasl_session_registry:
                 del gsasl_session_registry[ < int > self._c_gsasl_session]
-
 
     def hook_set(self, hook):
 
@@ -336,7 +342,7 @@ cdef class GSASLSession:
 
         wayround_org.gsasl.gsasl_h.gsasl_session_hook_set(
             self._c_gsasl_session,
-            < void *>< int > hook
+            < void * > < int > hook
             )
 
         return
@@ -361,20 +367,20 @@ cdef class GSASLSession:
         if not isinstance(prop, int):
             raise TypeError("prop must be int")
 
-        if data != None and not isinstance(data, bytes):
+        if data is not None and not isinstance(data, bytes):
             raise TypeError("data must be bytes or None")
 
-        if data != None:
+        if data is not None:
             wayround_org.gsasl.gsasl_h.gsasl_property_set(
                 self._c_gsasl_session,
-                < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop,
+                < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
                 < bytes > data
                 )
 
         else:
             wayround_org.gsasl.gsasl_h.gsasl_property_set(
                 self._c_gsasl_session,
-                < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop,
+                < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
                 NULL
                 )
 
@@ -393,7 +399,7 @@ cdef class GSASLSession:
 
         wayround_org.gsasl.gsasl_h.gsasl_property_set_raw(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop,
+            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
             < bytes > data,
             < int > size
             )
@@ -411,7 +417,7 @@ cdef class GSASLSession:
 
         cret = wayround_org.gsasl.gsasl_h.gsasl_property_get(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop
+            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         if cret != NULL:
@@ -432,7 +438,7 @@ cdef class GSASLSession:
 
         cret = wayround_org.gsasl.gsasl_h.gsasl_property_fast(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop
+            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         if cret != NULL:
@@ -596,7 +602,6 @@ cdef class GSASL:
     cdef _existed
     cdef _py_callback
 
-
     def __cinit__(self):
         self._c_gsasl = NULL
 
@@ -610,12 +615,12 @@ cdef class GSASL:
 
             if isinstance(initial_gsasl, int):
                 self._c_gsasl = (
-                    < wayround_org.gsasl.gsasl_h.Gsasl *> < int > initial_gsasl
+                    < wayround_org.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl
                     )
 
             if isinstance(initial_gsasl, GSASL):
                 self._c_gsasl = (
-                    < wayround_org.gsasl.gsasl_h.Gsasl *> < int > initial_gsasl.get_c_gsasl()
+                    < wayround_org.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl.get_c_gsasl()
                     )
 
         else:
@@ -639,14 +644,12 @@ cdef class GSASL:
 
         return
 
-
     def close(self):
 
         if not self._existed:
             if < int > self._c_gsasl in gsasl_registry.keys():
                 del gsasl_registry[ < int > self._c_gsasl]
         return
-
 
     def get_c_gsasl(self):
         return < int > self._c_gsasl
@@ -656,7 +659,7 @@ cdef class GSASL:
         return self._py_callback
 
     def set_c_gsasl(self, py_gsasl):
-        self._c_gsasl = < wayround_org.gsasl.gsasl_h.Gsasl *> < int > py_gsasl
+        self._c_gsasl = < wayround_org.gsasl.gsasl_h.Gsasl * > < int > py_gsasl
 
     def set_callback(self, func):
 
@@ -678,8 +681,8 @@ cdef class GSASL:
 
         wayround_org.gsasl.gsasl_h.gsasl_callback(
             self._c_gsasl,
-            < wayround_org.gsasl.gsasl_h.Gsasl_session *> < int > session.value,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property >< int > prop
+            < wayround_org.gsasl.gsasl_h.Gsasl_session * > < int > session.value,
+            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         return
@@ -691,7 +694,7 @@ cdef class GSASL:
 
         wayround_org.gsasl.gsasl_h.gsasl_callback_hook_set(
             self._c_gsasl,
-            < void *> hook.value
+            < void * > hook.value
             )
 
         return
@@ -701,7 +704,8 @@ cdef class GSASL:
         cdef void * cret = NULL
         ret = None
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_callback_hook_get(self._c_gsasl)
+        cret = wayround_org.gsasl.gsasl_h.gsasl_callback_hook_get(
+            self._c_gsasl)
 
         if cret != NULL:
             ret = GSASLCallbackHook(< int > cret)
@@ -718,14 +722,16 @@ cdef class GSASL:
 
         ret = None
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_client_start (
+        mech = bytes(mech, 'utf-8')
+
+        cret = wayround_org.gsasl.gsasl_h.gsasl_client_start(
             self._c_gsasl,
-            < char *>< bytes > bytes(mech, 'utf-8'),
+            < char * > mech,
             & sctx
             )
 
         if cret == GSASL_OK:
-            ret = (< int > cret, GSASLSession(< int > sctx))
+            ret = ( < int > cret, GSASLSession( < int > sctx))
         else:
             ret = (< int > cret, None)
 
@@ -741,14 +747,16 @@ cdef class GSASL:
 
         ret = None
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_server_start (
+        mech = bytes(mech, 'utf-8')
+
+        cret = wayround_org.gsasl.gsasl_h.gsasl_server_start(
             self._c_gsasl,
-            < char *>< bytes > bytes(mech, 'utf-8'),
+            < char * > mech,
             & sctx
             )
 
         if cret == GSASL_OK:
-            ret = (< int > cret, GSASLSession(< int > sctx))
+            ret = ( < int > cret, GSASLSession( < int > sctx))
         else:
             ret = (< int > cret, None)
 
@@ -827,10 +835,10 @@ cdef class GSASL:
         return ret
 
 cdef int callback(
-    wayround_org.gsasl.gsasl_h.Gsasl * ctx,
-    wayround_org.gsasl.gsasl_h.Gsasl_session * sctx,
-    wayround_org.gsasl.gsasl_h.Gsasl_property prop
-    ):
+        wayround_org.gsasl.gsasl_h.Gsasl * ctx,
+        wayround_org.gsasl.gsasl_h.Gsasl_session * sctx,
+        wayround_org.gsasl.gsasl_h.Gsasl_property prop
+        ):
 
     if not < int > ctx in gsasl_registry:
         raise KeyError("{} not registered in gsasl_registry".format(< int > ctx))
@@ -842,11 +850,12 @@ cdef int callback(
     session = gsasl_session_registry[ < int > sctx]
 
     if not hasattr(context, 'py_callback'):
-        raise KeyError("py_callback is absent in context of {}".format(context))
+        raise KeyError(
+            "py_callback is absent in context of {}".format(context))
 
     cdef int ret = GSASL_OK
 
-    t1 = context.py_callback != None
+    t1 = context.py_callback is not None
 
     t2 = callable(context.py_callback)
 
@@ -865,9 +874,7 @@ cdef int callback(
 #                                     *mechlist)
 
 
-
 def check_version(req_version=None):
-
     """
     Accepts None or str. Returns None or str
     """
@@ -875,19 +882,18 @@ def check_version(req_version=None):
     cdef char * req_version2 = NULL
     cdef char * cret = NULL
 
-
     ret = None
 
-    if req_version != None and not isinstance(req_version, str):
+    if req_version is not None and not isinstance(req_version, str):
         raise TypeError("req_version must be None or str")
 
     else:
 
-        if req_version == None:
+        if req_version is None:
             req_version2 = NULL
 
         if isinstance(req_version, str):
-            req_version2 = < bytes > bytes(req_version, 'utf-8')
+            req_version2 = < char * > req_version
 
         cret = wayround_org.gsasl.gsasl_h.gsasl_check_version(req_version2)
 
@@ -895,6 +901,7 @@ def check_version(req_version=None):
             ret = str(< bytes > cret, 'utf-8')
 
     return ret
+
 
 def strerror(err):
 
@@ -912,6 +919,7 @@ def strerror(err):
 
     return ret
 
+
 def strerror_name(err):
 
     if not isinstance(err, int):
@@ -928,6 +936,7 @@ def strerror_name(err):
 
     return ret
 
+
 def strproperty(prop):
 
     ret = '<Unknown property>'
@@ -938,6 +947,7 @@ def strproperty(prop):
             break
 
     return ret
+
 
 def strproperty_name(prop):
 
@@ -979,6 +989,7 @@ def saslprep(inv, flags):
         ret = (< int > cret, None, None)
 
     return ret
+
 
 def simple_getpass(filename, username):
 
@@ -1042,6 +1053,7 @@ def base64_to(inv):
 
     return ret
 
+
 def base64_from(inv):
 
     cdef size_t input_len
@@ -1083,44 +1095,46 @@ def nonce(datalen):
     cdef char * data
     cdef int cret
 
-    ret = ''
+    ret = b''
 
     if not isinstance(datalen, int):
         raise TypeError("datalen must be int")
 
-    data = < char *> malloc(< size_t > datalen)
+    data = < char * > malloc( < size_t > datalen)
 
     cret = wayround_org.gsasl.gsasl_h.gsasl_nonce(data, < size_t > datalen)
 
     ret = None
     if cret == GSASL_OK:
-        ret = < bytes > bytes (data[0:datalen])
+        ret = < bytes > data[0:datalen]
 
     free(data)
 
     return ret
+
 
 def random(datalen):
 
     cdef char * data
     cdef int cret
 
-    ret = ''
+    ret = b''
 
     if not isinstance(datalen, int):
         raise TypeError("datalen must be int")
 
-    data = < char *> malloc(< size_t > datalen)
+    data = < char * > malloc( < size_t > datalen)
 
     cret = wayround_org.gsasl.gsasl_h.gsasl_random(data, < size_t > datalen)
 
     ret = None
     if cret == GSASL_OK:
-        ret = < bytes > bytes (data[0:datalen])
+        ret = < bytes > data[0:datalen]
 
     free(data)
 
     return ret
+
 
 def md5(inv):
 
@@ -1144,7 +1158,7 @@ def md5(inv):
 
     if cret == GSASL_OK:
 
-        ret = < bytes > bytes(output[0:16])
+        ret = < bytes > output[0:16]
 
         free(output)
 
@@ -1154,6 +1168,7 @@ def md5(inv):
         ret = (< int > cret, None)
 
     return ret
+
 
 def hmac_md5(key, inv):
 
@@ -1184,7 +1199,7 @@ def hmac_md5(key, inv):
 
     if cret == GSASL_OK:
 
-        ret = < bytes > bytes(outhash[0:16])
+        ret = < bytes > outhash[0:16]
 
         free(outhash)
 
@@ -1194,6 +1209,7 @@ def hmac_md5(key, inv):
         ret = (< int > cret, None)
 
     return ret
+
 
 def sha1(inv):
 
@@ -1217,7 +1233,7 @@ def sha1(inv):
 
     if cret == GSASL_OK:
 
-        ret = < bytes > bytes(output[0:20])
+        ret = < bytes > output[0:20]
 
         free(output)
 
@@ -1227,6 +1243,7 @@ def sha1(inv):
         ret = (< int > cret, None)
 
     return ret
+
 
 def hmac_sha1(key, inv):
 
@@ -1257,7 +1274,7 @@ def hmac_sha1(key, inv):
 
     if cret == GSASL_OK:
 
-        ret = < bytes > bytes(outhash[0:20])
+        ret = < bytes > outhash[0:20]
 
         free(outhash)
 
@@ -1267,6 +1284,7 @@ def hmac_sha1(key, inv):
         ret = (< int > cret, None)
 
     return ret
+
 
 class GSASLSimple:
 
@@ -1314,7 +1332,9 @@ class GSASLSimple:
         if res[0] == GSASL_OK:
             self.gsasl_session_instance = res[1]
         else:
-            raise Exception("Could not start {} GSASL session".format(self.mode))
+            raise Exception(
+                "Could not start {} GSASL session".format(
+                    self.mode))
 
         self.started = True
 
@@ -1345,4 +1365,3 @@ class GSASLSimple:
 #            raise Exception("Not started")
 
         return self.gsasl_session_instance.step64(base64_str)
-

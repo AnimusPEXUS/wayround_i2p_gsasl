@@ -2,32 +2,32 @@
 import gc
 import logging
 
-import org.wayround.gsasl.gsasl
+import wayround_org.gsasl.gsasl
 
 
 def cb(context, session, prop):
 
-    ret = org.wayround.gsasl.gsasl.GSASL_OK
+    ret = wayround_org.gsasl.gsasl.GSASL_OK
 
     print(
         "{}: ({}) {} requested".format(
-            org.wayround.gsasl.gsasl.strproperty_name(prop),
+            wayround_org.gsasl.gsasl.strproperty_name(prop),
             prop,
-            org.wayround.gsasl.gsasl.strproperty(prop)
+            wayround_org.gsasl.gsasl.strproperty(prop)
             )
         )
 
-    if prop == org.wayround.gsasl.gsasl.GSASL_AUTHID:
+    if prop == wayround_org.gsasl.gsasl.GSASL_AUTHID:
         print("Setting GSASL_AUTHID")
-        session.property_set(org.wayround.gsasl.gsasl.GSASL_AUTHID, b'jas')
+        session.property_set(wayround_org.gsasl.gsasl.GSASL_AUTHID, b'jas')
 
-    if prop == org.wayround.gsasl.gsasl.GSASL_PASSWORD:
+    if prop == wayround_org.gsasl.gsasl.GSASL_PASSWORD:
         print("Setting GSASL_PASSWORD")
-        session.property_set(org.wayround.gsasl.gsasl.GSASL_PASSWORD, b'secret')
+        session.property_set(wayround_org.gsasl.gsasl.GSASL_PASSWORD, b'secret')
 
     return ret
 
-s = org.wayround.gsasl.gsasl.GSASLSimple(
+s = wayround_org.gsasl.gsasl.GSASLSimple(
     callback=cb
     )
 
@@ -38,5 +38,5 @@ while True:
 
     print("result: {}".format(r))
 
-    if r[0] != org.wayround.gsasl.gsasl.GSASL_NEEDS_MORE:
+    if r[0] != wayround_org.gsasl.gsasl.GSASL_NEEDS_MORE:
         break

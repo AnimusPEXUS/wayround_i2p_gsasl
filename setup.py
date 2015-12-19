@@ -5,19 +5,19 @@ from Cython.Distutils import build_ext
 
 setup(
     name='org_wayround_gsasl',
-    version='0.1',
+    version='0.2',
     description='Python gsasl binding',
     packages=[
-        'org.wayround.gsasl'
+        'wayround_org.gsasl'
         ],
     ext_modules=[
         Extension(
-            "org.wayround.gsasl.gsasl",
-            ["org/wayround/gsasl/gsasl.pyx"],
+            "wayround_org.gsasl.gsasl",
+            ["wayround_org/gsasl/gsasl.pyx"],
             libraries=["gsasl"]
             # TODO: pkg-config
             )
         ],
     cmdclass={'build_ext': build_ext},
-    package_data={'org.wayround.gsasl': ['*.pxd']},
+    package_data={'wayround_org.gsasl': ['*.pxd']},
     )

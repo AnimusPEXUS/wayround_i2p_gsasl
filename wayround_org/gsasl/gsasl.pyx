@@ -486,7 +486,7 @@ cdef class GSASLSession:
 
     def step64(self, b64input):
 
-        cdef char * b64output
+        cdef char * b64output = NULL
 
         cdef int cret
 
@@ -495,9 +495,11 @@ cdef class GSASLSession:
         if not isinstance(b64input, str):
             raise TypeError("b64input must be str")
 
+        b64input = bytes(b64input, 'utf-8')
+
         cret = wayround_org.gsasl.gsasl_h.gsasl_step64(
             self._c_gsasl_session,
-            < bytes > bytes(b64input, 'utf-8'),
+            <char *> b64input,
             & b64output,
             )
 

@@ -4,7 +4,7 @@ from setuptools import setup, Extension
 from Cython.Distutils import build_ext
 
 setup(
-    name='org_wayround_gsasl',
+    name='wayround_org_gsasl',
     version='0.2.1',
     description='Python gsasl binding',
     packages=[

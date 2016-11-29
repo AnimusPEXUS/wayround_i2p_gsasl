@@ -5,57 +5,57 @@
 Made by wayround.org
 """
 
-cimport wayround_org.gsasl.gsasl_h
+cimport wayround_i2p.gsasl.gsasl_h
 
 from libc.stdlib cimport free, malloc
 
 # ERRORS
 
-GSASL_OK = wayround_org.gsasl.gsasl_h.GSASL_OK
-GSASL_NEEDS_MORE = wayround_org.gsasl.gsasl_h.GSASL_NEEDS_MORE
-GSASL_UNKNOWN_MECHANISM = wayround_org.gsasl.gsasl_h.GSASL_UNKNOWN_MECHANISM
-GSASL_MECHANISM_CALLED_TOO_MANY_TIMES = wayround_org.gsasl.gsasl_h.GSASL_MECHANISM_CALLED_TOO_MANY_TIMES
-GSASL_MALLOC_ERROR = wayround_org.gsasl.gsasl_h.GSASL_MALLOC_ERROR
-GSASL_BASE64_ERROR = wayround_org.gsasl.gsasl_h.GSASL_BASE64_ERROR
-GSASL_CRYPTO_ERROR = wayround_org.gsasl.gsasl_h.GSASL_CRYPTO_ERROR
-GSASL_SASLPREP_ERROR = wayround_org.gsasl.gsasl_h.GSASL_SASLPREP_ERROR
-GSASL_MECHANISM_PARSE_ERROR = wayround_org.gsasl.gsasl_h.GSASL_MECHANISM_PARSE_ERROR
-GSASL_AUTHENTICATION_ERROR = wayround_org.gsasl.gsasl_h.GSASL_AUTHENTICATION_ERROR
-GSASL_INTEGRITY_ERROR = wayround_org.gsasl.gsasl_h.GSASL_INTEGRITY_ERROR
-GSASL_NO_CLIENT_CODE = wayround_org.gsasl.gsasl_h.GSASL_NO_CLIENT_CODE
-GSASL_NO_SERVER_CODE = wayround_org.gsasl.gsasl_h.GSASL_NO_SERVER_CODE
-GSASL_NO_CALLBACK = wayround_org.gsasl.gsasl_h.GSASL_NO_CALLBACK
-GSASL_NO_ANONYMOUS_TOKEN = wayround_org.gsasl.gsasl_h.GSASL_NO_ANONYMOUS_TOKEN
-GSASL_NO_AUTHID = wayround_org.gsasl.gsasl_h.GSASL_NO_AUTHID
-GSASL_NO_AUTHZID = wayround_org.gsasl.gsasl_h.GSASL_NO_AUTHZID
-GSASL_NO_PASSWORD = wayround_org.gsasl.gsasl_h.GSASL_NO_PASSWORD
-GSASL_NO_PASSCODE = wayround_org.gsasl.gsasl_h.GSASL_NO_PASSCODE
-GSASL_NO_PIN = wayround_org.gsasl.gsasl_h.GSASL_NO_PIN
-GSASL_NO_SERVICE = wayround_org.gsasl.gsasl_h.GSASL_NO_SERVICE
-GSASL_NO_HOSTNAME = wayround_org.gsasl.gsasl_h.GSASL_NO_HOSTNAME
-GSASL_NO_CB_TLS_UNIQUE = wayround_org.gsasl.gsasl_h.GSASL_NO_CB_TLS_UNIQUE
-GSASL_NO_SAML20_IDP_IDENTIFIER = wayround_org.gsasl.gsasl_h.GSASL_NO_SAML20_IDP_IDENTIFIER
-GSASL_NO_SAML20_REDIRECT_URL = wayround_org.gsasl.gsasl_h.GSASL_NO_SAML20_REDIRECT_URL
-GSASL_NO_OPENID20_REDIRECT_URL = wayround_org.gsasl.gsasl_h.GSASL_NO_OPENID20_REDIRECT_URL
-GSASL_GSSAPI_RELEASE_BUFFER_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_BUFFER_ERROR
-GSASL_GSSAPI_IMPORT_NAME_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_IMPORT_NAME_ERROR
-GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR
-GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR
-GSASL_GSSAPI_UNWRAP_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_UNWRAP_ERROR
-GSASL_GSSAPI_WRAP_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_WRAP_ERROR
-GSASL_GSSAPI_ACQUIRE_CRED_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_ACQUIRE_CRED_ERROR
-GSASL_GSSAPI_DISPLAY_NAME_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_DISPLAY_NAME_ERROR
-GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR
-GSASL_KERBEROS_V5_INIT_ERROR = wayround_org.gsasl.gsasl_h.GSASL_KERBEROS_V5_INIT_ERROR
-GSASL_KERBEROS_V5_INTERNAL_ERROR = wayround_org.gsasl.gsasl_h.GSASL_KERBEROS_V5_INTERNAL_ERROR
-GSASL_SHISHI_ERROR = wayround_org.gsasl.gsasl_h.GSASL_SHISHI_ERROR
-GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE = wayround_org.gsasl.gsasl_h.GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE
-GSASL_SECURID_SERVER_NEED_NEW_PIN = wayround_org.gsasl.gsasl_h.GSASL_SECURID_SERVER_NEED_NEW_PIN
-GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR
-GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR
-GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR
-GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR
-GSASL_GSSAPI_RELEASE_OID_SET_ERROR = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_OID_SET_ERROR
+GSASL_OK = wayround_i2p.gsasl.gsasl_h.GSASL_OK
+GSASL_NEEDS_MORE = wayround_i2p.gsasl.gsasl_h.GSASL_NEEDS_MORE
+GSASL_UNKNOWN_MECHANISM = wayround_i2p.gsasl.gsasl_h.GSASL_UNKNOWN_MECHANISM
+GSASL_MECHANISM_CALLED_TOO_MANY_TIMES = wayround_i2p.gsasl.gsasl_h.GSASL_MECHANISM_CALLED_TOO_MANY_TIMES
+GSASL_MALLOC_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_MALLOC_ERROR
+GSASL_BASE64_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_BASE64_ERROR
+GSASL_CRYPTO_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_CRYPTO_ERROR
+GSASL_SASLPREP_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_SASLPREP_ERROR
+GSASL_MECHANISM_PARSE_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_MECHANISM_PARSE_ERROR
+GSASL_AUTHENTICATION_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_AUTHENTICATION_ERROR
+GSASL_INTEGRITY_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_INTEGRITY_ERROR
+GSASL_NO_CLIENT_CODE = wayround_i2p.gsasl.gsasl_h.GSASL_NO_CLIENT_CODE
+GSASL_NO_SERVER_CODE = wayround_i2p.gsasl.gsasl_h.GSASL_NO_SERVER_CODE
+GSASL_NO_CALLBACK = wayround_i2p.gsasl.gsasl_h.GSASL_NO_CALLBACK
+GSASL_NO_ANONYMOUS_TOKEN = wayround_i2p.gsasl.gsasl_h.GSASL_NO_ANONYMOUS_TOKEN
+GSASL_NO_AUTHID = wayround_i2p.gsasl.gsasl_h.GSASL_NO_AUTHID
+GSASL_NO_AUTHZID = wayround_i2p.gsasl.gsasl_h.GSASL_NO_AUTHZID
+GSASL_NO_PASSWORD = wayround_i2p.gsasl.gsasl_h.GSASL_NO_PASSWORD
+GSASL_NO_PASSCODE = wayround_i2p.gsasl.gsasl_h.GSASL_NO_PASSCODE
+GSASL_NO_PIN = wayround_i2p.gsasl.gsasl_h.GSASL_NO_PIN
+GSASL_NO_SERVICE = wayround_i2p.gsasl.gsasl_h.GSASL_NO_SERVICE
+GSASL_NO_HOSTNAME = wayround_i2p.gsasl.gsasl_h.GSASL_NO_HOSTNAME
+GSASL_NO_CB_TLS_UNIQUE = wayround_i2p.gsasl.gsasl_h.GSASL_NO_CB_TLS_UNIQUE
+GSASL_NO_SAML20_IDP_IDENTIFIER = wayround_i2p.gsasl.gsasl_h.GSASL_NO_SAML20_IDP_IDENTIFIER
+GSASL_NO_SAML20_REDIRECT_URL = wayround_i2p.gsasl.gsasl_h.GSASL_NO_SAML20_REDIRECT_URL
+GSASL_NO_OPENID20_REDIRECT_URL = wayround_i2p.gsasl.gsasl_h.GSASL_NO_OPENID20_REDIRECT_URL
+GSASL_GSSAPI_RELEASE_BUFFER_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_BUFFER_ERROR
+GSASL_GSSAPI_IMPORT_NAME_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_IMPORT_NAME_ERROR
+GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_INIT_SEC_CONTEXT_ERROR
+GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_ACCEPT_SEC_CONTEXT_ERROR
+GSASL_GSSAPI_UNWRAP_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_UNWRAP_ERROR
+GSASL_GSSAPI_WRAP_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_WRAP_ERROR
+GSASL_GSSAPI_ACQUIRE_CRED_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_ACQUIRE_CRED_ERROR
+GSASL_GSSAPI_DISPLAY_NAME_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_DISPLAY_NAME_ERROR
+GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_UNSUPPORTED_PROTECTION_ERROR
+GSASL_KERBEROS_V5_INIT_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_KERBEROS_V5_INIT_ERROR
+GSASL_KERBEROS_V5_INTERNAL_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_KERBEROS_V5_INTERNAL_ERROR
+GSASL_SHISHI_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_SHISHI_ERROR
+GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE = wayround_i2p.gsasl.gsasl_h.GSASL_SECURID_SERVER_NEED_ADDITIONAL_PASSCODE
+GSASL_SECURID_SERVER_NEED_NEW_PIN = wayround_i2p.gsasl.gsasl_h.GSASL_SECURID_SERVER_NEED_NEW_PIN
+GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_ENCAPSULATE_TOKEN_ERROR
+GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_DECAPSULATE_TOKEN_ERROR
+GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_INQUIRE_MECH_FOR_SASLNAME_ERROR
+GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_TEST_OID_SET_MEMBER_ERROR
+GSASL_GSSAPI_RELEASE_OID_SET_ERROR = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_RELEASE_OID_SET_ERROR
 
 ERRORS_LIST = {
     'GSASL_OK': GSASL_OK,
@@ -155,61 +155,61 @@ ERRORS = {
 
 # RFC 2222 (MECHANISM NAME LENGTH)
 
-GSASL_MIN_MECHANISM_SIZE = wayround_org.gsasl.gsasl_h.GSASL_MIN_MECHANISM_SIZE
-GSASL_MAX_MECHANISM_SIZE = wayround_org.gsasl.gsasl_h.GSASL_MAX_MECHANISM_SIZE
+GSASL_MIN_MECHANISM_SIZE = wayround_i2p.gsasl.gsasl_h.GSASL_MIN_MECHANISM_SIZE
+GSASL_MAX_MECHANISM_SIZE = wayround_i2p.gsasl.gsasl_h.GSASL_MAX_MECHANISM_SIZE
 
 # QUALITY OF PROTECTION TYPES
 
-GSASL_QOP_AUTH = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH
-GSASL_QOP_AUTH_INT = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH_INT
-GSASL_QOP_AUTH_CONF = wayround_org.gsasl.gsasl_h.GSASL_QOP_AUTH_CONF
+GSASL_QOP_AUTH = wayround_i2p.gsasl.gsasl_h.GSASL_QOP_AUTH
+GSASL_QOP_AUTH_INT = wayround_i2p.gsasl.gsasl_h.GSASL_QOP_AUTH_INT
+GSASL_QOP_AUTH_CONF = wayround_i2p.gsasl.gsasl_h.GSASL_QOP_AUTH_CONF
 
 # ENCRYPTION TYPES
 
-GSASL_CIPHER_DES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_DES
-GSASL_CIPHER_3DES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_3DES
-GSASL_CIPHER_RC4 = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_RC4
-GSASL_CIPHER_RC4_40 = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_RC4_40
-GSASL_CIPHER_RC4_56 = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_RC4_56
-GSASL_CIPHER_AES = wayround_org.gsasl.gsasl_h.GSASL_CIPHER_AES
+GSASL_CIPHER_DES = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_DES
+GSASL_CIPHER_3DES = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_3DES
+GSASL_CIPHER_RC4 = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_RC4
+GSASL_CIPHER_RC4_40 = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_RC4_40
+GSASL_CIPHER_RC4_56 = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_RC4_56
+GSASL_CIPHER_AES = wayround_i2p.gsasl.gsasl_h.GSASL_CIPHER_AES
 
 # FLAGS FOR THE SASLPREP FUNCTION
 
-GSASL_ALLOW_UNASSIGNED = wayround_org.gsasl.gsasl_h.GSASL_ALLOW_UNASSIGNED
+GSASL_ALLOW_UNASSIGNED = wayround_i2p.gsasl.gsasl_h.GSASL_ALLOW_UNASSIGNED
 
 # CALLBACK/PROPERTY TYPES
 
-GSASL_AUTHID = wayround_org.gsasl.gsasl_h.GSASL_AUTHID
-GSASL_AUTHZID = wayround_org.gsasl.gsasl_h.GSASL_AUTHZID
-GSASL_PASSWORD = wayround_org.gsasl.gsasl_h.GSASL_PASSWORD
-GSASL_ANONYMOUS_TOKEN = wayround_org.gsasl.gsasl_h.GSASL_ANONYMOUS_TOKEN
-GSASL_SERVICE = wayround_org.gsasl.gsasl_h.GSASL_SERVICE
-GSASL_HOSTNAME = wayround_org.gsasl.gsasl_h.GSASL_HOSTNAME
-GSASL_GSSAPI_DISPLAY_NAME = wayround_org.gsasl.gsasl_h.GSASL_GSSAPI_DISPLAY_NAME
-GSASL_PASSCODE = wayround_org.gsasl.gsasl_h.GSASL_PASSCODE
-GSASL_SUGGESTED_PIN = wayround_org.gsasl.gsasl_h.GSASL_SUGGESTED_PIN
-GSASL_PIN = wayround_org.gsasl.gsasl_h.GSASL_PIN
-GSASL_REALM = wayround_org.gsasl.gsasl_h.GSASL_REALM
-GSASL_DIGEST_MD5_HASHED_PASSWORD = wayround_org.gsasl.gsasl_h.GSASL_DIGEST_MD5_HASHED_PASSWORD
-GSASL_QOPS = wayround_org.gsasl.gsasl_h.GSASL_QOPS
-GSASL_QOP = wayround_org.gsasl.gsasl_h.GSASL_QOP
-GSASL_SCRAM_ITER = wayround_org.gsasl.gsasl_h.GSASL_SCRAM_ITER
-GSASL_SCRAM_SALT = wayround_org.gsasl.gsasl_h.GSASL_SCRAM_SALT
-GSASL_SCRAM_SALTED_PASSWORD = wayround_org.gsasl.gsasl_h.GSASL_SCRAM_SALTED_PASSWORD
-GSASL_CB_TLS_UNIQUE = wayround_org.gsasl.gsasl_h.GSASL_CB_TLS_UNIQUE
-GSASL_SAML20_IDP_IDENTIFIER = wayround_org.gsasl.gsasl_h.GSASL_SAML20_IDP_IDENTIFIER
-GSASL_SAML20_REDIRECT_URL = wayround_org.gsasl.gsasl_h.GSASL_SAML20_REDIRECT_URL
-GSASL_OPENID20_REDIRECT_URL = wayround_org.gsasl.gsasl_h.GSASL_OPENID20_REDIRECT_URL
-GSASL_OPENID20_OUTCOME_DATA = wayround_org.gsasl.gsasl_h.GSASL_OPENID20_OUTCOME_DATA
-GSASL_SAML20_AUTHENTICATE_IN_BROWSER = wayround_org.gsasl.gsasl_h.GSASL_SAML20_AUTHENTICATE_IN_BROWSER
-GSASL_OPENID20_AUTHENTICATE_IN_BROWSER = wayround_org.gsasl.gsasl_h.GSASL_OPENID20_AUTHENTICATE_IN_BROWSER
-GSASL_VALIDATE_SIMPLE = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_SIMPLE
-GSASL_VALIDATE_EXTERNAL = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_EXTERNAL
-GSASL_VALIDATE_ANONYMOUS = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_ANONYMOUS
-GSASL_VALIDATE_GSSAPI = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_GSSAPI
-GSASL_VALIDATE_SECURID = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_SECURID
-GSASL_VALIDATE_SAML20 = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_SAML20
-GSASL_VALIDATE_OPENID20 = wayround_org.gsasl.gsasl_h.GSASL_VALIDATE_OPENID20
+GSASL_AUTHID = wayround_i2p.gsasl.gsasl_h.GSASL_AUTHID
+GSASL_AUTHZID = wayround_i2p.gsasl.gsasl_h.GSASL_AUTHZID
+GSASL_PASSWORD = wayround_i2p.gsasl.gsasl_h.GSASL_PASSWORD
+GSASL_ANONYMOUS_TOKEN = wayround_i2p.gsasl.gsasl_h.GSASL_ANONYMOUS_TOKEN
+GSASL_SERVICE = wayround_i2p.gsasl.gsasl_h.GSASL_SERVICE
+GSASL_HOSTNAME = wayround_i2p.gsasl.gsasl_h.GSASL_HOSTNAME
+GSASL_GSSAPI_DISPLAY_NAME = wayround_i2p.gsasl.gsasl_h.GSASL_GSSAPI_DISPLAY_NAME
+GSASL_PASSCODE = wayround_i2p.gsasl.gsasl_h.GSASL_PASSCODE
+GSASL_SUGGESTED_PIN = wayround_i2p.gsasl.gsasl_h.GSASL_SUGGESTED_PIN
+GSASL_PIN = wayround_i2p.gsasl.gsasl_h.GSASL_PIN
+GSASL_REALM = wayround_i2p.gsasl.gsasl_h.GSASL_REALM
+GSASL_DIGEST_MD5_HASHED_PASSWORD = wayround_i2p.gsasl.gsasl_h.GSASL_DIGEST_MD5_HASHED_PASSWORD
+GSASL_QOPS = wayround_i2p.gsasl.gsasl_h.GSASL_QOPS
+GSASL_QOP = wayround_i2p.gsasl.gsasl_h.GSASL_QOP
+GSASL_SCRAM_ITER = wayround_i2p.gsasl.gsasl_h.GSASL_SCRAM_ITER
+GSASL_SCRAM_SALT = wayround_i2p.gsasl.gsasl_h.GSASL_SCRAM_SALT
+GSASL_SCRAM_SALTED_PASSWORD = wayround_i2p.gsasl.gsasl_h.GSASL_SCRAM_SALTED_PASSWORD
+GSASL_CB_TLS_UNIQUE = wayround_i2p.gsasl.gsasl_h.GSASL_CB_TLS_UNIQUE
+GSASL_SAML20_IDP_IDENTIFIER = wayround_i2p.gsasl.gsasl_h.GSASL_SAML20_IDP_IDENTIFIER
+GSASL_SAML20_REDIRECT_URL = wayround_i2p.gsasl.gsasl_h.GSASL_SAML20_REDIRECT_URL
+GSASL_OPENID20_REDIRECT_URL = wayround_i2p.gsasl.gsasl_h.GSASL_OPENID20_REDIRECT_URL
+GSASL_OPENID20_OUTCOME_DATA = wayround_i2p.gsasl.gsasl_h.GSASL_OPENID20_OUTCOME_DATA
+GSASL_SAML20_AUTHENTICATE_IN_BROWSER = wayround_i2p.gsasl.gsasl_h.GSASL_SAML20_AUTHENTICATE_IN_BROWSER
+GSASL_OPENID20_AUTHENTICATE_IN_BROWSER = wayround_i2p.gsasl.gsasl_h.GSASL_OPENID20_AUTHENTICATE_IN_BROWSER
+GSASL_VALIDATE_SIMPLE = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_SIMPLE
+GSASL_VALIDATE_EXTERNAL = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_EXTERNAL
+GSASL_VALIDATE_ANONYMOUS = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_ANONYMOUS
+GSASL_VALIDATE_GSSAPI = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_GSSAPI
+GSASL_VALIDATE_SECURID = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_SECURID
+GSASL_VALIDATE_SAML20 = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_SAML20
+GSASL_VALIDATE_OPENID20 = wayround_i2p.gsasl.gsasl_h.GSASL_VALIDATE_OPENID20
 
 # PROPERTIES DICT
 
@@ -308,7 +308,7 @@ gsasl_session_registry = {}
 
 cdef class GSASLSession:
 
-    cdef wayround_org.gsasl.gsasl_h.Gsasl_session * _c_gsasl_session
+    cdef wayround_i2p.gsasl.gsasl_h.Gsasl_session * _c_gsasl_session
 
     def __cinit__(self):
         self._c_gsasl_session = NULL
@@ -316,7 +316,7 @@ cdef class GSASLSession:
     def __init__(self, value):
 
         self._c_gsasl_session = (
-            < wayround_org.gsasl.gsasl_h.Gsasl_session * > < int > int(value)
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_session * > < int > int(value)
             )
 
         if not < int > self._c_gsasl_session in gsasl_session_registry:
@@ -324,7 +324,7 @@ cdef class GSASLSession:
 
     def __dealloc__(self):
         if self._c_gsasl_session != NULL:
-            wayround_org.gsasl.gsasl_h.gsasl_finish(
+            wayround_i2p.gsasl.gsasl_h.gsasl_finish(
                 self._c_gsasl_session
                 )
 
@@ -340,7 +340,7 @@ cdef class GSASLSession:
                 "Wrong hook parameter type. Must be GSASLSessionHook"
                 )
 
-        wayround_org.gsasl.gsasl_h.gsasl_session_hook_set(
+        wayround_i2p.gsasl.gsasl_h.gsasl_session_hook_set(
             self._c_gsasl_session,
             < void * > < int > hook
             )
@@ -353,7 +353,7 @@ cdef class GSASLSession:
 
         ret = None
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_session_hook_get(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_session_hook_get(
             self._c_gsasl_session
             )
 
@@ -371,16 +371,16 @@ cdef class GSASLSession:
             raise TypeError("data must be bytes or None")
 
         if data is not None:
-            wayround_org.gsasl.gsasl_h.gsasl_property_set(
+            wayround_i2p.gsasl.gsasl_h.gsasl_property_set(
                 self._c_gsasl_session,
-                < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
+                < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop,
                 < bytes > data
                 )
 
         else:
-            wayround_org.gsasl.gsasl_h.gsasl_property_set(
+            wayround_i2p.gsasl.gsasl_h.gsasl_property_set(
                 self._c_gsasl_session,
-                < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
+                < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop,
                 NULL
                 )
 
@@ -397,9 +397,9 @@ cdef class GSASLSession:
         if not isinstance(size, int):
             raise TypeError("size must be int")
 
-        wayround_org.gsasl.gsasl_h.gsasl_property_set_raw(
+        wayround_i2p.gsasl.gsasl_h.gsasl_property_set_raw(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop,
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop,
             < bytes > data,
             < int > size
             )
@@ -415,9 +415,9 @@ cdef class GSASLSession:
         if not isinstance(prop, int):
             raise TypeError("prop must be int")
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_property_get(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_property_get(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         if cret != NULL:
@@ -436,9 +436,9 @@ cdef class GSASLSession:
         if not isinstance(prop, int):
             raise TypeError("prop must be int")
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_property_fast(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_property_fast(
             self._c_gsasl_session,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         if cret != NULL:
@@ -463,7 +463,7 @@ cdef class GSASLSession:
 
         input_len = len(input)
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_step(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_step(
             self._c_gsasl_session,
             < bytes > bytes(inp[0:input_len]),
             < size_t > input_len,
@@ -497,7 +497,7 @@ cdef class GSASLSession:
 
         b64input = bytes(b64input, 'utf-8')
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_step64(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_step64(
             self._c_gsasl_session,
             <char *> b64input,
             & b64output,
@@ -531,7 +531,7 @@ cdef class GSASLSession:
 
         input_len = len(inp)
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_encode(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_encode(
             self._c_gsasl_session,
             < bytes > bytes(inp[0:input_len]),
             < size_t > input_len,
@@ -567,7 +567,7 @@ cdef class GSASLSession:
 
         input_len = len(inp)
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_decode(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_decode(
             self._c_gsasl_session,
             < bytes > bytes(inp[0:input_len]),
             < size_t > input_len,
@@ -591,7 +591,7 @@ cdef class GSASLSession:
     def mechanism_name(self):
 
         return str(
-            < str > wayround_org.gsasl.gsasl_h.gsasl_mechanism_name(
+            < str > wayround_i2p.gsasl.gsasl_h.gsasl_mechanism_name(
                 self._c_gsasl_session
                 ),
             'utf-8'
@@ -600,7 +600,7 @@ cdef class GSASLSession:
 
 cdef class GSASL:
 
-    cdef wayround_org.gsasl.gsasl_h.Gsasl * _c_gsasl
+    cdef wayround_i2p.gsasl.gsasl_h.Gsasl * _c_gsasl
     cdef _existed
     cdef _py_callback
 
@@ -617,17 +617,17 @@ cdef class GSASL:
 
             if isinstance(initial_gsasl, int):
                 self._c_gsasl = (
-                    < wayround_org.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl
+                    < wayround_i2p.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl
                     )
 
             if isinstance(initial_gsasl, GSASL):
                 self._c_gsasl = (
-                    < wayround_org.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl.get_c_gsasl()
+                    < wayround_i2p.gsasl.gsasl_h.Gsasl * > < int > initial_gsasl.get_c_gsasl()
                     )
 
         else:
 
-            res = wayround_org.gsasl.gsasl_h.gsasl_init(& self._c_gsasl)
+            res = wayround_i2p.gsasl.gsasl_h.gsasl_init(& self._c_gsasl)
 
             if res != GSASL_OK:
                 raise GSASInitException("Exception {} while init".format(res))
@@ -640,7 +640,7 @@ cdef class GSASL:
     def __dealloc__(self):
         if not self._existed:
             if self._c_gsasl != NULL:
-                wayround_org.gsasl.gsasl_h.gsasl_done(
+                wayround_i2p.gsasl.gsasl_h.gsasl_done(
                     self._c_gsasl
                     )
 
@@ -661,15 +661,15 @@ cdef class GSASL:
         return self._py_callback
 
     def set_c_gsasl(self, py_gsasl):
-        self._c_gsasl = < wayround_org.gsasl.gsasl_h.Gsasl * > < int > py_gsasl
+        self._c_gsasl = < wayround_i2p.gsasl.gsasl_h.Gsasl * > < int > py_gsasl
 
     def set_callback(self, func):
 
         self._py_callback = func
 
-        wayround_org.gsasl.gsasl_h.gsasl_callback_set(
+        wayround_i2p.gsasl.gsasl_h.gsasl_callback_set(
             self._c_gsasl,
-            < wayround_org.gsasl.gsasl_h.Gsasl_callback_function > callback
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_callback_function > callback
             )
         return
 
@@ -681,10 +681,10 @@ cdef class GSASL:
         if not isinstance(prop, int):
             raise TypeError("prop must be of int type")
 
-        wayround_org.gsasl.gsasl_h.gsasl_callback(
+        wayround_i2p.gsasl.gsasl_h.gsasl_callback(
             self._c_gsasl,
-            < wayround_org.gsasl.gsasl_h.Gsasl_session * > < int > session.value,
-            < wayround_org.gsasl.gsasl_h.Gsasl_property > < int > prop
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_session * > < int > session.value,
+            < wayround_i2p.gsasl.gsasl_h.Gsasl_property > < int > prop
             )
 
         return
@@ -694,7 +694,7 @@ cdef class GSASL:
         if not isinstance(hook, GSASLCallbackHook):
             raise TypeError("hook must be of type GSASLCallbackHook")
 
-        wayround_org.gsasl.gsasl_h.gsasl_callback_hook_set(
+        wayround_i2p.gsasl.gsasl_h.gsasl_callback_hook_set(
             self._c_gsasl,
             < void * > hook.value
             )
@@ -706,7 +706,7 @@ cdef class GSASL:
         cdef void * cret = NULL
         ret = None
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_callback_hook_get(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_callback_hook_get(
             self._c_gsasl)
 
         if cret != NULL:
@@ -716,7 +716,7 @@ cdef class GSASL:
 
     def client_start(self, mech):
 
-        cdef wayround_org.gsasl.gsasl_h.Gsasl_session * sctx
+        cdef wayround_i2p.gsasl.gsasl_h.Gsasl_session * sctx
         cdef int cret
 
         if not isinstance(mech, str):
@@ -726,7 +726,7 @@ cdef class GSASL:
 
         mech = bytes(mech, 'utf-8')
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_client_start(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_client_start(
             self._c_gsasl,
             < char * > mech,
             & sctx
@@ -741,7 +741,7 @@ cdef class GSASL:
 
     def server_start(self, mech):
 
-        cdef wayround_org.gsasl.gsasl_h.Gsasl_session * sctx
+        cdef wayround_i2p.gsasl.gsasl_h.Gsasl_session * sctx
         cdef int cret
 
         if not isinstance(mech, str):
@@ -751,7 +751,7 @@ cdef class GSASL:
 
         mech = bytes(mech, 'utf-8')
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_server_start(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_server_start(
             self._c_gsasl,
             < char * > mech,
             & sctx
@@ -769,7 +769,7 @@ cdef class GSASL:
         cdef char * out = NULL
         cdef int cret
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_client_mechlist(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_client_mechlist(
             self._c_gsasl,
             & out
             )
@@ -791,7 +791,7 @@ cdef class GSASL:
         if not isinstance(name, str):
             raise TypeError("name must be str")
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_client_support_p(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_client_support_p(
             self._c_gsasl,
             < bytes > bytes(name, 'utf-8')
             )
@@ -805,7 +805,7 @@ cdef class GSASL:
         cdef char * out = NULL
         cdef int cret
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_server_mechlist(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_server_mechlist(
             self._c_gsasl,
             & out
             )
@@ -827,7 +827,7 @@ cdef class GSASL:
         if not isinstance(name, str):
             raise TypeError("name must be str")
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_server_support_p(
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_server_support_p(
             self._c_gsasl,
             < bytes > bytes(name, 'utf-8')
             )
@@ -837,9 +837,9 @@ cdef class GSASL:
         return ret
 
 cdef int callback(
-        wayround_org.gsasl.gsasl_h.Gsasl * ctx,
-        wayround_org.gsasl.gsasl_h.Gsasl_session * sctx,
-        wayround_org.gsasl.gsasl_h.Gsasl_property prop
+        wayround_i2p.gsasl.gsasl_h.Gsasl * ctx,
+        wayround_i2p.gsasl.gsasl_h.Gsasl_session * sctx,
+        wayround_i2p.gsasl.gsasl_h.Gsasl_property prop
         ):
 
     if not < int > ctx in gsasl_registry:
@@ -897,7 +897,7 @@ def check_version(req_version=None):
         if isinstance(req_version, str):
             req_version2 = < char * > req_version
 
-        cret = wayround_org.gsasl.gsasl_h.gsasl_check_version(req_version2)
+        cret = wayround_i2p.gsasl.gsasl_h.gsasl_check_version(req_version2)
 
         if not cret == NULL:
             ret = str(< bytes > cret, 'utf-8')
@@ -914,7 +914,7 @@ def strerror(err):
 
     ret = 0
 
-    ret = < bytes > wayround_org.gsasl.gsasl_h.gsasl_strerror(int(err))
+    ret = < bytes > wayround_i2p.gsasl.gsasl_h.gsasl_strerror(int(err))
 
     if isinstance(ret, bytes):
         ret = str(ret, 'utf-8')
@@ -931,7 +931,7 @@ def strerror_name(err):
 
     ret = 0
 
-    ret = < bytes > wayround_org.gsasl.gsasl_h.gsasl_strerror_name(int(err))
+    ret = < bytes > wayround_i2p.gsasl.gsasl_h.gsasl_strerror_name(int(err))
 
     if isinstance(ret, bytes):
         ret = str(ret, 'utf-8')
@@ -972,9 +972,9 @@ def saslprep(inv, flags):
     if not isinstance(inv, str):
         raise TypeError("inv must be str")
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_saslprep(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_saslprep(
         < bytes > bytes(inv, 'utf-8'),
-        < wayround_org.gsasl.gsasl_h.Gsasl_saslprep_flags > flags,
+        < wayround_i2p.gsasl.gsasl_h.Gsasl_saslprep_flags > flags,
         & out,
         & stringpreprc
         )
@@ -1004,7 +1004,7 @@ def simple_getpass(filename, username):
     if not isinstance(username, str):
         raise TypeError("username must be str")
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_simple_getpass(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_simple_getpass(
         < bytes > bytes(filename, 'utf-8'),
         < bytes > bytes(username, 'utf-8'),
         & key
@@ -1035,7 +1035,7 @@ def base64_to(inv):
 
     input_len = len(inv)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_base64_to(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_base64_to(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         & output,
@@ -1071,7 +1071,7 @@ def base64_from(inv):
 
     input_len = len(inv)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_base64_from(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_base64_from(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         & output,
@@ -1104,7 +1104,7 @@ def nonce(datalen):
 
     data = < char * > malloc( < size_t > datalen)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_nonce(data, < size_t > datalen)
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_nonce(data, < size_t > datalen)
 
     ret = None
     if cret == GSASL_OK:
@@ -1127,7 +1127,7 @@ def random(datalen):
 
     data = < char * > malloc( < size_t > datalen)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_random(data, < size_t > datalen)
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_random(data, < size_t > datalen)
 
     ret = None
     if cret == GSASL_OK:
@@ -1152,7 +1152,7 @@ def md5(inv):
 
     input_len = len(inv)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_md5(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_md5(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         & output
@@ -1191,7 +1191,7 @@ def hmac_md5(key, inv):
     input_len = len(inv)
     key_len = len(key)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_hmac_md5(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_hmac_md5(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         < bytes > bytes(key[0:key_len]),
@@ -1227,7 +1227,7 @@ def sha1(inv):
 
     input_len = len(inv)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_sha1(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_sha1(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         & output
@@ -1266,7 +1266,7 @@ def hmac_sha1(key, inv):
     input_len = len(inv)
     key_len = len(key)
 
-    cret = wayround_org.gsasl.gsasl_h.gsasl_hmac_sha1(
+    cret = wayround_i2p.gsasl.gsasl_h.gsasl_hmac_sha1(
         < bytes > bytes(inv[0:input_len]),
         < size_t > input_len,
         < bytes > bytes(key[0:key_len]),
